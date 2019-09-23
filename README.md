@@ -1,3 +1,3 @@
 # GenderBias_CheXNet
 
-In folder splits, you could find the 20 randoms folds.
+In folder Splits, you could find the files csv that we use in our 20x cross validation for all ours experiments.
