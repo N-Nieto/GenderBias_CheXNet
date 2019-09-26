@@ -10,7 +10,7 @@ from utility import get_sample_counts
 
 def main(fold,gender_train,gender_test):
     # parser config
-    config_file = 'config_multiclass_paper_resnet.ini'
+    config_file = 'config_multiclas.ini'
     cp = ConfigParser()
     cp.read(config_file)
 
