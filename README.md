@@ -16,8 +16,10 @@ In this repository you will find all the scripts we need.
 ### Step 2 - Download the data (If you already have the data downloaded skip this step) :
 
 - Open a Terminal
+
 - Set the terminal path in the unzip GenderBias_CheXNet
->>python batch_download_zips.py
+
+(base)>> `python batch_download_zips.py`
 
 This may take a while. 
 
@@ -29,12 +31,15 @@ https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/37178474737
   1- Open a Terminal in the path if the repository, or where you have the enviroment.ylm file.
   
   
-  2- >>`pip3 install -r requirements.txt`
+  2- (base)>>`pip3 install -r requirements.txt`
 
 ### Step 4 - Activate the enviroment
 
 - Open a new terminal
-  >>`source activate your_env_name`
+
+  (base)>>`source activate your_env_name`
+  
+  (your_env_name)>>
 
 ### Step 5 - Train the network
 
