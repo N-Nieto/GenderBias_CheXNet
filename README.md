@@ -4,6 +4,7 @@ In this tutorial you will find all the steps and instuctions you need in order t
 ### Step 0: If is your fist time coding, you will have to install Python. We recommend to install Anaconda Distribution.
 
 You could find some easy explained instuctions in the following tutorial:
+
 https://www.digitalocean.com/community/tutorials/how-to-install-anaconda-on-ubuntu-18-04-quickstart
 
 
@@ -24,6 +25,7 @@ In this repository you will find all the scripts we need.
 This may take a while. 
 
 If you rather prefer to download the data by your own, you could find all the files here:
+
 https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/37178474737
 
 ### Step 3 - Create a Python enviroment
