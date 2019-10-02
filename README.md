@@ -26,7 +26,7 @@ If you rather prefer to download the data by your own, you could find all the fi
 
 https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/37178474737
 
-### Step 3 - Create a Python enviroment
+### Step 3 - Create a Python enviroment:
 
   1- Open a Terminal in the repository's path.
   
@@ -43,7 +43,7 @@ https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/37178474737
   (your_env_name)>>
   
 
-### Step 5 - Training the network
+### Step 5 - Training the network:
 
 First, make sure that in "config_file.ini" the image_source_dir contains the path where you have download the dataset.
 
