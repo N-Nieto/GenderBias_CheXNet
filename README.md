@@ -7,6 +7,7 @@ You could find some straigthforward instructions in the following tutorial:
 
 https://www.digitalocean.com/community/tutorials/how-to-install-anaconda-on-ubuntu-18-04-quickstart
 
+We use conda 4.7.12
 
 ### Step 1 - Download the GenderBias_CheXNet repository:
 
@@ -32,8 +33,28 @@ https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/37178474737
   
   2- Run the following command:
  
-  (base)>>`conda env create --name your_env_name  --file requirements.yml`
+  (base)>>`conda env create --name your_env_name  --file requirements.txt`
+  
+Some packages could not be install by conda so we have to install theme with pip inside your environmiroment.
 
+  (base)>>`source activate your_env_name`
+  
+  (your_env_name)>> `pip install pillow==4.2.0`
+  
+  (your_env_name)>> `pip install opencv-python==4.1.0.25`
+  
+  (your_env_name)>> `pip install imgaug==0.2.9`
+  
+### Step 4 - Check CUDA version compatibility:
+
+  Check your system cuda version
+  
+  (your_env_name)>> `nvcc --version`
+  
+  Update your env cuda version
+  
+  (your_env_name)>> `conda install cudatoolkit==your_cuda_version`
+ 
 ### Step 4 - Activate the environment with the following command:
 
   (base)>>`source activate your_env_name`
@@ -42,7 +63,6 @@ https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/37178474737
   
   (your_env_name)>>
   
-
 ### Step 5 - Training the network:
 
 First, make sure that in "config_file.ini" the image_source_dir contains the path where you have download the dataset.
