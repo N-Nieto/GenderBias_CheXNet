@@ -10,14 +10,15 @@ from utility import get_sample_counts
 
 def main(fold,gender_train,gender_test):
     # parser config
-    config_file = 'config_multiclas.ini'
+    config_file = 'config_file.ini'
     cp = ConfigParser()
     cp.read(config_file)
 
     root_output_dir= cp["DEFAULT"].get("output_dir") 
 
-    # default config
-    output_dir= root_output_dir+gender_train+'/run_'+str(fold)+'/output/'
+    # default config 
+    print(root_output_dir,gender_train)   
+    output_dir= root_output_dir + gender_train+'/Fold_'+str(fold)+'/output/'
 
     base_model_name = cp["DEFAULT"].get("base_model_name")
     class_names = cp["DEFAULT"].get("class_names").split(",")
@@ -37,7 +38,7 @@ def main(fold,gender_train,gender_test):
     best_weights_path = os.path.join(output_dir, f"best_{output_weights_name}")
 
     # get test sample count
-    test_counts, _ = get_sample_counts(root_output_dir+gender_test+'/run_'+str(fold),"test", class_names)
+    test_counts, _ = get_sample_counts(root_output_dir+gender_train+'/Fold_'+str(fold),str(gender_test), class_names)
 
     # compute steps
     if test_steps == "auto":
@@ -68,7 +69,7 @@ def main(fold,gender_train,gender_test):
 
     print("** load test generator **")
     test_sequence = AugmentedImageSequence(
-        dataset_csv_file=os.path.join(root_output_dir+gender_test+'/run_'+str(fold), "test.csv"),
+        dataset_csv_file=os.path.join(root_output_dir+gender_train+'/Fold_'+str(fold), str(gender_test)+".csv"),
      
         class_names=class_names,
         source_image_dir=image_source_dir,
@@ -84,8 +85,8 @@ def main(fold,gender_train,gender_test):
     y_hat = model.predict_generator(test_sequence, verbose=1)
     y = test_sequence.get_y_true()
 
-    y_pred_dir = output_dir + "y_pred_run_" + str(fold)+"_train_"+gender_train+"_test_"+gender_test+ ".csv"
-    y_true_dir = output_dir + "y_true__run_" + str(fold)+"_train_"+gender_train+"_test_"+gender_test+ ".csv"
+    y_pred_dir = output_dir + "y_pred_run_" + str(fold)+"_train"+gender_train+"_"+gender_test+ ".csv"
+    y_true_dir = output_dir + "y_true_run_" + str(fold)+"_train"+gender_train+"_"+gender_test+ ".csv"
 
 
     np.savetxt(y_pred_dir, y_hat, delimiter=",")
@@ -93,10 +94,12 @@ def main(fold,gender_train,gender_test):
 
 if __name__ == "__main__":
 
-	genders_train=['M']
-	genders_test= ['M','F']
+	genders_train=['0%_female_images','100%_female_images']
+	genders_test= ['test_female','test_males']
+	n_splits=20
 
-	for fold in range (20):
+
+	for fold in range (n_splits):
 		for gender_train in genders_train:
 			for gender_test in genders_test:
 				main(fold=fold,gender_train=gender_train,gender_test=gender_test)
