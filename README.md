@@ -1,5 +1,7 @@
 # GenderBias_CheXNet
-In this tutorial you will find all the steps and instructions you need in order to reproduce the experiments showing gender bias.
+In this tutorial you will find all the steps and instructions you need in order to reproduce the experiments showing gender bias. 
+
+This code is based on the following publicly available implementation of CheXNet using Keras: https://github.com/brucechou1983/CheXNet-Keras
 
 ### Step 0: If it is your first time coding in Python 3, you will have to install it. We recommend to install Anaconda Distribution:
 
@@ -55,7 +57,7 @@ Some packages could not be install by conda so we have to install theme with pip
   
   (your_env_name)>> `conda install cudatoolkit==your_cuda_version`
  
-### Step 4 - Activate the environment with the following command:
+### Step 5 - Activate the environment with the following command:
 
   (base)>>`source activate your_env_name`
   
@@ -63,7 +65,7 @@ Some packages could not be install by conda so we have to install theme with pip
   
   (your_env_name)>>
   
-### Step 5 - Training the network:
+### Step 6 - Training the network:
 
 First, make sure that in "config_file.ini" the image_source_dir contains the path where you have download the dataset.
 
@@ -73,7 +75,7 @@ Run the training script with the following command:
 
 When the training process finished, you will find the "/output" folder that contains the trained weights of the network.
 
-### Step 6 - Testing the network:
+### Step 7 - Testing the network:
 
 Now that you have your model trained, it is time to generate predictions in unseen data
 
