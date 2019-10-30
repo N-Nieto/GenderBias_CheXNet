@@ -1,11 +1,11 @@
 # GenderBias_CheXNet
-In this tutorial you will find all the steps and instructions you need in order to reproduce the experiments showing gender bias. 
+In this tutorial you will find all the steps and instructions you need in order to reproduce the experiments realiced in "Diversity Matters: Gender Imbalance in Medical Imaging Datasets Produces Biased Classifiers for Computer-aided Diagnosis" by Agostina Larrazabal, Nicolás Nieto, Victoria Peterson, Diego H. Milone, and Enzo Ferrante. October 2019.
 
 This code is based on the following publicly available implementation of CheXNet using Keras: https://github.com/brucechou1983/CheXNet-Keras
 
 ### Step 0: If it is your first time coding in Python 3, you will have to install it. We recommend to install Anaconda Distribution:
 
-You could find some straigthforward instructions in the following tutorial:
+You could find some straigthforward instructions in the following tutorial (up to Step 8):
 
 https://www.digitalocean.com/community/tutorials/how-to-install-anaconda-on-ubuntu-18-04-quickstart
 
