@@ -88,3 +88,6 @@ When the testing is over, you will find the network predictions in the "/output"
 As an example, for the fold 0, training with only male images and testing on female set you will find:
 
 `y_pred_run_0_train_0%_female_images_test_female.csv`
+
+
+<img src="images/ResNet.png" withd="0.1">
