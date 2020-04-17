@@ -91,8 +91,8 @@ As an example, for the fold 0, training with only male images and testing on fem
 
 ### Results
 
-<img src="images/DenseNet.png" width="700">
+<img src="images/DenseNet.png" width="800">
 
 <img src="images/ResNet.png" width="800">
 
-<img src="images/Inception.png" width="900">
+<img src="images/Inception.png" width="800">
