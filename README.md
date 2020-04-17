@@ -91,6 +91,11 @@ As an example, for the fold 0, training with only male images and testing on fem
 
 # Results
 
+<img src="images/results.png" width="900">
+
+Experimental results for a DenseNet-121 classifier trained with images from the NIH dataset for 14 thoracic diseases under different gender imbalance ratios. [A] The boxplots aggregate the results for 20 folds, training with male-only (blue) and female-only (orange) patients. Both models are evaluated given male and female test folds. A consistent decrease in performance is observed when using male patients for training and female for testing (and viceversa). [B-C] Area under the receiver operating characteristic curve (AUC) achieved for two exemplar diseases under a gradient of imbalance gender ratios, from 0% of female images in training data to 100%, with increments of 25%. (B-1,2) show the results when testing on male patients, while (C-1,2) presents the results when testing on female patients. 
+Statistical significance according to Mann–Whitney U test is denoted by **** (p ≤ 0.00001), *** ( 0.00001 < p ≤ 0.0001), ** ( 0.0001 < p ≤ 0.001), * ( 0.001 < p ≤ 0.01) and ns (p > 0.01).}
+
 <img src="images/DenseNet.png" width="800">
 
 Experimental results for a DenseNet classifier trained with images from the NIH dataset and the CheXpert dataset. The boxplots aggregate the results for 20 folds, training with male (blue) and female (orange) patients. Both models are evaluated given male-only and female-only test folds. A consistent decrease in terms of area under the receiver operating characteristic curve (AUC) is observed when using male patients for training and female for testing (and viceversa). Statistical significance according to Mann–Whitney U test is denoted by **** (p ≤ 0.00001), *** ( 0.00001 < p ≤ 0.0001), ** ( 0.0001 < p ≤ 0.001), * ( 0.001 < p ≤ 0.01) and ns (p > 0.01).}
