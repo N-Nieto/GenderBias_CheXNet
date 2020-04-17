@@ -93,19 +93,13 @@ As an example, for the fold 0, training with only male images and testing on fem
 
 In this section we include results for our analysis using three different CNN architectures and two datasets of X-ray images.
 
-## DenseNet model
-
 <img src="images/DenseNet.png" width="800">
 
 Experimental results for a DenseNet classifier trained with images from the NIH dataset and the CheXpert dataset. The boxplots aggregate the results for 20 folds, training with male (blue) and female (orange) patients. Both models are evaluated given male-only and female-only test folds. A consistent decrease in terms of area under the receiver operating characteristic curve (AUC) is observed when using male patients for training and female for testing (and viceversa). Statistical significance according to Mann–Whitney U test is denoted by **** (p ≤ 0.00001), *** ( 0.00001 < p ≤ 0.0001), ** ( 0.0001 < p ≤ 0.001), * ( 0.001 < p ≤ 0.01) and ns (p > 0.01).}
 
-## ResNet model
-
 <img src="images/ResNet.png" width="800">
 
 Experimental results for a ResNet classifier trained with images from the NIH dataset and the CheXpert dataset. The boxplots aggregate the results for 20 folds, training with male (blue) and female (orange) patients. Both models are evaluated given male-only and female-only test folds. A consistent decrease in terms of area under the receiver operating characteristic curve (AUC) is observed when using male patients for training and female for testing (and viceversa). Statistical significance according to Mann–Whitney U test is denoted by **** (p ≤ 0.00001), *** ( 0.00001 < p ≤ 0.0001), ** ( 0.0001 < p ≤ 0.001), * ( 0.001 < p ≤ 0.01) and ns (p > 0.01).}
-
-## InceptionV3 model
 
 <img src="images/Inception.png" width="800">
 
