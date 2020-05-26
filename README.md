@@ -1,5 +1,7 @@
 # GenderBias_CheXNet
-In this tutorial you will find all the steps and instructions you need in order to reproduce the experiments performed in "Gender Imbalance in Medical Imaging Datasets Produces Biased Classifiers for Computer-aided Diagnosis" by Agostina Larrazabal, Nicolás Nieto, Victoria Peterson, Diego H. Milone, and Enzo Ferrante. October 2019.
+In this tutorial you will find all the steps and instructions you need in order to reproduce the experiments performed in "Gender Imbalance in Medical Imaging Datasets Produces Biased Classifiers for Computer-aided Diagnosis" by Agostina Larrazabal, Nicolás Nieto, Victoria Peterson, Diego H. Milone, and Enzo Ferrante. Proceedings of the National Academy of Sciences May 2020.
+
+https://www.pnas.org/content/early/2020/05/19/1919012117
 
 This code is based on the following publicly available implementation of CheXNet using Keras: https://github.com/brucechou1983/CheXNet-Keras
 
