@@ -5,9 +5,9 @@ import pickle
 from callback import MultipleClassAUROC, MultiGPUModelCheckpoint
 from configparser import ConfigParser
 from generator import AugmentedImageSequence
-from keras.callbacks import ModelCheckpoint, TensorBoard, ReduceLROnPlateau
-from keras.optimizers import Adam
-from keras.utils import multi_gpu_model
+from tensorflow.keras.callbacks import ModelCheckpoint, TensorBoard, ReduceLROnPlateau
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.utils import multi_gpu_model
 from models.keras import ModelFactory
 from utility import get_sample_counts
 from weights import get_class_weights
