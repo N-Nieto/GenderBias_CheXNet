@@ -1,10 +1,10 @@
 import json
-import tensorflow.keras.backend as kb
+import keras.backend as kb
 import numpy as np
 import os
 import shutil
 import warnings
-from tensorflow.keras.callbacks import Callback
+from keras.callbacks import Callback
 from sklearn.metrics import roc_auc_score
 
 

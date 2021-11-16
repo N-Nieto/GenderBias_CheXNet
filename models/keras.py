@@ -6,7 +6,7 @@ from keras.models import Model
 
 class ModelFactory:
     """
-    Model facotry for Keras default models
+    Model factory for Keras default models
     """
 
     def __init__(self):
