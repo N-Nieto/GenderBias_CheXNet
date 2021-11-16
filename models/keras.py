@@ -1,7 +1,7 @@
 import importlib
-from keras.layers import Input
-from keras.layers.core import Dense
-from keras.models import Model
+from tensorflow.keras.layers import Input
+from tensorflow.keras.layers.core import Dense
+from tensorflow.keras.models import Model
 
 
 class ModelFactory:
