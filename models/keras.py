@@ -1,5 +1,5 @@
 import importlib
-from keras.layers import Input
+from tensorflow.keras.layers import Input
 from keras.layers.core import Dense
 from keras.models import Model
 
