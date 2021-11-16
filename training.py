@@ -7,7 +7,7 @@ from configparser import ConfigParser
 from generator import AugmentedImageSequence
 from tensorflow.keras.callbacks import ModelCheckpoint, TensorBoard, ReduceLROnPlateau
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.utils import multi_gpu_model
+# from tensorflow.keras.utils import multi_gpu_model
 from models.keras import ModelFactory
 from utility import get_sample_counts
 from weights import get_class_weights
@@ -165,22 +165,22 @@ def main(fold,gender_train):
 
         print("** check multiple gpu availability **")
         gpus = len(os.getenv("CUDA_VISIBLE_DEVICES", "1").split(","))
-        if gpus > 1:
-            print(f"** multi_gpu_model is used! gpus={gpus} **")
-            model_train = multi_gpu_model(model, gpus)
-            # FIXME: currently (Keras 2.1.2) checkpoint doesn't work with multi_gpu_model
-            checkpoint = MultiGPUModelCheckpoint(
-                filepath=output_weights_path,
-                base_model=model,
-            )
-        else:
-            model_train = model
-            checkpoint = ModelCheckpoint(
-                 output_weights_path,
-                 save_weights_only=True,
-                 save_best_only=True,
-                 verbose=1,
-            )
+        # if gpus > 1:
+        #     print(f"** multi_gpu_model is used! gpus={gpus} **")
+        #     model_train = multi_gpu_model(model, gpus)
+        #     # FIXME: currently (Keras 2.1.2) checkpoint doesn't work with multi_gpu_model
+        #     checkpoint = MultiGPUModelCheckpoint(
+        #         filepath=output_weights_path,
+        #         base_model=model,
+        #     )
+        # else:
+        model_train = model
+        checkpoint = ModelCheckpoint(
+                output_weights_path,
+                save_weights_only=True,
+                save_best_only=True,
+                verbose=1,
+        )
 
         print("** compile model with class weights **")
         optimizer = Adam(lr=initial_learning_rate)
