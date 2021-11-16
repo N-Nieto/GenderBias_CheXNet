@@ -18,7 +18,9 @@ def get_sample_counts(output_dir, dataset, class_names):
     """
     df = pd.read_csv(os.path.join(output_dir, f"{dataset}.csv"))
     total_count = df.shape[0]
-    labels = df[class_names].values()
+    print(type(df[class_names]))
+    labels = df[class_names]
+    # labels = df[class_names].to_numpy()
     positive_counts = np.sum(labels, axis=0)
     class_positive_counts = dict(zip(class_names, positive_counts))
     return total_count, class_positive_counts
