@@ -16,6 +16,7 @@ from augmenter import augmenter
 
 def main(fold,gender_train):
     # parser config 
+    print('test')
 
     config_file = 'config_file.ini'
     cp = ConfigParser()
