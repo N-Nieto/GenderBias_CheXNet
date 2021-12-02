@@ -23,10 +23,12 @@ def main(fold,gender_train):
 
     from keras import backend as K
     K.tensorflow_backend._get_available_gpus()
+    print(K.tensorflow_backend._get_available_gpus())
 
     import keras
     config = tf.ConfigProto( device_count = {'GPU': 1} ) 
     sess = tf.Session(config=config) 
+    print(sess)
     keras.backend.set_session(sess)
 
     # default config
