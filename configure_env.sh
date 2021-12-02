@@ -19,11 +19,14 @@ git clone https://github.com/justincurl/GenderBias_CheXNet.git
 
 cd GenderBias_CheXNet/
 conda create --name gender_bias --file requirements.txt
+
 source activate gender_bias
 pip install pillow==4.2.0
 pip install opencv-python==4.1.0.25
 pip install imgaug==0.2.9
 pip install numpy==1.13.3
 conda install -c anaconda cudatoolkit
+
+pip list
 
 python training.py
