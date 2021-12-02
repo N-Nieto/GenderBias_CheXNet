@@ -16,8 +16,6 @@ from augmenter import augmenter
 
 def main(fold,gender_train):
     # parser config 
-    print('test')
-
     config_file = 'config_file.ini'
     cp = ConfigParser()
     cp.read(config_file)
@@ -166,6 +164,7 @@ def main(fold,gender_train):
 
         print("** check multiple gpu availability **")
         gpus = len(os.getenv("CUDA_VISIBLE_DEVICES", "1").split(","))
+        print(len(os.getenv("CUDA_VISIBLE_DEVICES", "1").split(",")))
         if gpus > 1:
             print(f"** multi_gpu_model is used! gpus={gpus} **")
             model_train = multi_gpu_model(model, gpus)
