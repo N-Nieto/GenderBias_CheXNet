@@ -21,6 +21,14 @@ def main(fold,gender_train):
     cp.read(config_file)
     root_output_dir= cp["DEFAULT"].get("output_dir") 
 
+    from keras import backend as K
+    K.tensorflow_backend._get_available_gpus()
+
+    import keras
+    config = tf.ConfigProto( device_count = {'GPU': 1} ) 
+    sess = tf.Session(config=config) 
+    keras.backend.set_session(sess)
+
     # default config
     output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output/'
     image_source_dir = cp["DEFAULT"].get("image_source_dir")
@@ -164,8 +172,10 @@ def main(fold,gender_train):
 
         print("** check multiple gpu availability **")
         gpus = len(os.getenv("CUDA_VISIBLE_DEVICES", "1").split(","))
-        print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
         print(len(os.getenv("CUDA_VISIBLE_DEVICES", "1").split(",")))
+        from tensorflow.python.client import device_lib
+        print(device_lib.list_local_devices()) 
+        
         if gpus > 1:
             print(f"** multi_gpu_model is used! gpus={gpus} **")
             model_train = multi_gpu_model(model, gpus)
