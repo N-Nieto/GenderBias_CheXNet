@@ -164,6 +164,7 @@ def main(fold,gender_train):
 
         print("** check multiple gpu availability **")
         gpus = len(os.getenv("CUDA_VISIBLE_DEVICES", "1").split(","))
+        print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
         print(len(os.getenv("CUDA_VISIBLE_DEVICES", "1").split(",")))
         if gpus > 1:
             print(f"** multi_gpu_model is used! gpus={gpus} **")
