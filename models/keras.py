@@ -97,4 +97,9 @@ class ModelFactory:
 
         print("number of layers: ", len(model.layers))
         print("layers: ", model.layers)
+
+        # set the first 25 layers (up to the last conv block)
+        # to non-trainable (weights will not be updated)
+        # for layer in model.layers[:25]:
+        #     layer.trainable = False
         return model
