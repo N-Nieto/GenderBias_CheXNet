@@ -94,4 +94,7 @@ class ModelFactory:
         if weights_path is not None:
             print(f"load model weights_path: {weights_path}")
             model.load_weights(weights_path)
+
+        print("number of layers: ", len(model.layers))
+        print("layers: ", model.layers)
         return model

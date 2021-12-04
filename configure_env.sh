@@ -15,9 +15,6 @@ chmod +x $MINICONDA_INSTALLER_SCRIPT
 conda install --channel defaults conda python=3.7 --yes
 conda update --channel defaults --all --yes
 
-git clone https://github.com/justincurl/GenderBias_CheXNet.git
-
-cd GenderBias_CheXNet/
 conda create --name gender_bias --file requirements.txt
 
 source activate gender_bias

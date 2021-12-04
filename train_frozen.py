@@ -5,13 +5,15 @@ import pickle
 from callback import MultipleClassAUROC, MultiGPUModelCheckpoint
 from configparser import ConfigParser
 from generator import AugmentedImageSequence
-from keras.callbacks import ModelCheckpoint, TensorBoard, ReduceLROnPlateau
+from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau
 from keras.optimizers import Adam
 from keras.utils import multi_gpu_model
 from models.keras import ModelFactory
 from utility import get_sample_counts
 from weights import get_class_weights
 from augmenter import augmenter
+from keras import backend as K
+import tensorflow as tf
 
 
 def main(fold,gender_train):
@@ -21,11 +23,9 @@ def main(fold,gender_train):
     cp.read(config_file)
     root_output_dir= cp["DEFAULT"].get("output_dir") 
 
-    from keras import backend as K
-    import tensorflow as tf
-    import keras
-
     K.tensorflow_backend._get_available_gpus()
+
+    import keras
     config = tf.ConfigProto( device_count = {'GPU': 1} ) 
     sess = tf.Session(config=config) 
     print(sess)
