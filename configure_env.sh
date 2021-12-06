@@ -25,5 +25,3 @@ pip install numpy==1.13.3
 yes | conda install -c anaconda cudatoolkit
 
 pip list
-
-python training_finetune.py
