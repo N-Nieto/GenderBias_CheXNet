@@ -32,15 +32,14 @@ def main(fold,gender_train, finetune):
     keras.backend.set_session(sess)
 
     ############################################################################################# default config ####################################################################################################
-    output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output/'
-    image_source_dir = cp["DEFAULT"].get("image_source_dir")
-    base_model_name = cp["DEFAULT"].get("base_model_name")
-    class_names = cp["DEFAULT"].get("class_names").split(",")
-
-    print('********************************************** training_finetune.py *********************************************************')
 
     ############################################################################################# fine-tune config ####################################################################################################
     for finetune_name in ['female_finetune_100', 'female_finetune_500', 'female_finetune_1000', 'female_finetune_2500', 'female_finetune_5000', 'female_finetune_10000', 'female_finetune_20000']:
+        output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output/'
+        image_source_dir = cp["DEFAULT"].get("image_source_dir")
+        base_model_name = cp["DEFAULT"].get("base_model_name")
+        class_names = cp["DEFAULT"].get("class_names").split(",")
+
         use_trained_model_weights = cp["FINETUNE"].getboolean("use_trained_model_weights")
         use_base_model_weights = cp["FINETUNE"].getboolean("use_base_model_weights")
         use_best_weights = cp["FINETUNE"].getboolean("use_best_weights")
