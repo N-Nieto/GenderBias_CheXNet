@@ -37,6 +37,8 @@ def main(fold,gender_train  ):
     base_model_name = cp["DEFAULT"].get("base_model_name")
     class_names = cp["DEFAULT"].get("class_names").split(",")
 
+    print('********************************************** training_finetune.py *********************************************************')
+
     ############################################################################################# fine-tune config ####################################################################################################
     for finetune_name in ['female_finetune_100', 'female_finetune_500', 'female_finetune_1000', 'female_finetune_2500', 'female_finetune_5000', 'female_finetune_10000', 'female_finetune_20000']:
         use_trained_model_weights = cp["FINETUNE"].getboolean("use_trained_model_weights")
@@ -53,7 +55,7 @@ def main(fold,gender_train  ):
         validation_steps = cp["FINETUNE"].get("validation_steps")
         positive_weights_multiply = cp["FINETUNE"].getfloat("positive_weights_multiply")
         print('use trained model weights:', use_trained_model_weights)
-        
+
         dataset_csv_dir = root_output_dir+gender_train+'/Fold_'+str(fold)+'/'
         # if previously trained weights is used, never re-split
         if use_trained_model_weights:
