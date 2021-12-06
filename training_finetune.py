@@ -73,12 +73,6 @@ def main(fold,gender_train, finetune):
             # start over
             training_stats = {}
 
-        output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
-
-        # check output_dir, create it if not exists
-        if not os.path.isdir(output_dir):
-            os.makedirs(output_dir)
-
 
         show_model_summary = cp["FINETUNE"].getboolean("show_model_summary")
         # end parser config
@@ -177,6 +171,12 @@ def main(fold,gender_train, finetune):
                 steps=validation_steps,
                 shuffle_on_epoch_end=False,
             )
+
+            output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
+
+            # check output_dir, create it if not exists
+            if not os.path.isdir(output_dir):
+                os.makedirs(output_dir)
 
             output_weights_path = os.path.join(output_dir, output_weights_name)
             print(f"** set output weights path to: {output_weights_path} **")
