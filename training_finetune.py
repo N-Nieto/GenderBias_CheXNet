@@ -42,6 +42,7 @@ def main(fold,gender_train, finetune):
     ############################################################################################# fine-tune config ####################################################################################################
     for finetune_name in ['female_finetune_100', 'female_finetune_500', 'female_finetune_1000', 'female_finetune_2500', 'female_finetune_5000', 'female_finetune_10000', 'female_finetune_20000']:
         use_trained_model_weights = cp["FINETUNE"].getboolean("use_trained_model_weights")
+        use_base_model_weights = cp["FINETUNE"].getboolean("use_base_model_weights")
         use_best_weights = cp["FINETUNE"].getboolean("use_best_weights")
         output_weights_name = cp["FINETUNE"].get("output_weights_name")
         epochs = cp["FINETUNE"].getint("epochs")
