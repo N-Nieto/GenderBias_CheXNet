@@ -171,7 +171,7 @@ def main(fold,gender_train, finetune):
                 shuffle_on_epoch_end=False,
             )
 
-            output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
+            output_dir= '/content/drive/'+root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
 
             # check output_dir, create it if not exists
             if not os.path.isdir(output_dir):
@@ -248,7 +248,7 @@ def main(fold,gender_train, finetune):
 if __name__ == "__main__":
 
 	genders_train=['0%_female_images','100%_female_images']
-	n_splits=20
+	n_splits=1
 
 	for gender in genders_train:
 		for i in range(n_splits):
