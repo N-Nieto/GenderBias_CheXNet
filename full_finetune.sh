@@ -26,4 +26,6 @@ yes | conda install -c anaconda cudatoolkit
 
 pip list
 
-python training_finetune.py
+read $filename
+
+python $filename
