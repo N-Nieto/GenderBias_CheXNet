@@ -26,6 +26,8 @@ yes | conda install -c anaconda cudatoolkit
 
 pip list
 
-read $filename
+echo Which file would you like to run?
+
+read filename
 
 python $filename
