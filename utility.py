@@ -21,4 +21,5 @@ def get_sample_counts(output_dir, dataset, class_names):
     labels = df[class_names].to_numpy()
     positive_counts = np.sum(labels, axis=0)
     class_positive_counts = dict(zip(class_names, positive_counts))
+    print(total_count, class_positive_counts)
     return total_count, class_positive_counts
