@@ -248,7 +248,7 @@ def main(fold,gender_train, finetune):
 if __name__ == "__main__":
 
 	genders_train=['0%_female_images','100%_female_images']
-	n_splits=1
+	n_splits=20
 
 	for gender in genders_train:
 		for i in range(n_splits):
