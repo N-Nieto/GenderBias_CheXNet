@@ -14,7 +14,7 @@ from weights import get_class_weights
 from augmenter import augmenter
 
 
-def main(fold,gender_train, finetune):
+def main(fold, gender_train):
     ############################################################################################# parser config ####################################################################################################
     config_file = 'config_file.ini'
     cp = ConfigParser()
@@ -248,8 +248,8 @@ def main(fold,gender_train, finetune):
 if __name__ == "__main__":
 
 	genders_train=['0%_female_images','100%_female_images']
-	n_splits=1
+	n_splits=20
 
 	for gender in genders_train:
 		for i in range(n_splits):
-			main(fold=i,gender_train=gender, finetune=True)
+			main(fold=i,gender_train=gender)
