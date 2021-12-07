@@ -34,7 +34,7 @@ def main(fold,gender_train, finetune):
     ############################################################################################# default config ####################################################################################################
 
     ############################################################################################# fine-tune config ####################################################################################################
-    for finetune_name in ['female_finetune_100', 'female_finetune_500', 'female_finetune_1000', 'female_finetune_2500', 'female_finetune_5000', 'female_finetune_10000', 'female_finetune_20000']:
+    for finetune_name in [ 'female_finetune_5000']:
         output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output/'
         image_source_dir = cp["DEFAULT"].get("image_source_dir")
         base_model_name = cp["DEFAULT"].get("base_model_name")
