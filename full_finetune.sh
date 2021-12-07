@@ -31,3 +31,11 @@ echo Which file would you like to run?
 read filename
 
 python $filename
+
+mv -f ./Cross_validation_splits/0%_female_images/Fold_0/output_finetune_100 /content/drive/output_finetune_100
+mv -f ./Cross_validation_splits/0%_female_images/Fold_0/output_finetune_500 /content/drive/output_finetune_500
+mv -f ./Cross_validation_splits/0%_female_images/Fold_0/output_finetune_1000 /content/drive/output_finetune_1000
+mv -f ./Cross_validation_splits/0%_female_images/Fold_0/output_finetune_2500 /content/drive/output_finetune_2500
+mv -f ./Cross_validation_splits/0%_female_images/Fold_0/output_finetune_1000 /content/drive/output_finetune_5000
+mv -f ./Cross_validation_splits/0%_female_images/Fold_0/output_finetune_2500 /content/drive/output_finetune_10000
+mv -f ./Cross_validation_splits/0%_female_images/Fold_0/output_finetune_1000 /content/drive/output_finetune_20000
