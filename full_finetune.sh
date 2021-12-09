@@ -26,7 +26,7 @@ yes | conda install -c anaconda cudatoolkit
 
 pip list
 
-echo What python file plus args would you like to run (ex: training.py --fold 1)?
+echo What python file plus args would you like to run ex: training.py --fold 1?
 read filename
 
 python $filename
