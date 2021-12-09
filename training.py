@@ -238,10 +238,21 @@ def main(fold,gender_train, finetune):
 
 
 if __name__ == "__main__":
+    import argparse
 
-	genders_train=['0%_female_images','100%_female_images']
-	n_splits=20
+    # Instantiate the parser
+    parser = argparse.ArgumentParser()
+    parser.add_argument('fold', type=int, help='A required integer argument between 0 and 20 for target fold')
+    args = parser.parse_args()
+    fold = args.fold
+    if fold < 20 and fold >= 0:
+        folds = [i for i in range(fold)] + [i for i in range(fold, 20)]
+    else:
+        folds = [i for i in range(20)]
 
-	for gender in genders_train:
-		for i in range(n_splits):
-			main(fold=i,gender_train=gender)
+
+    genders_train=['0%_female_images','100%_female_images']
+
+    for gender in genders_train:
+        for i in range(folds):
+            main(fold=i,gender_train=gender)
