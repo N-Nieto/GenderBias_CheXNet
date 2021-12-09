@@ -244,4 +244,4 @@ if __name__ == "__main__":
 
 	for gender in genders_train:
 		for i in range(n_splits):
-			main(fold=i,gender_train=gender, finetune=True)
+			main(fold=i,gender_train=gender)
