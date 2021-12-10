@@ -16,11 +16,11 @@ def main(fold,gender_train,gender_test):
 
     root_output_dir= cp["DEFAULT"].get("output_dir") 
 
-    for finetune_name in ['female_finetune_100', 'female_finetune_500', 'female_finetune_1000', 'female_finetune_2500', 'female_finetune_5000', 'female_finetune_10000', 'female_finetune_20000']:
+    for finetune_name in ['','_female_finetune_100', '_female_finetune_500', '_female_finetune_1000', '_female_finetune_2500', '_female_finetune_5000']:
 
         # default config 
         print(root_output_dir,gender_train)   
-        output_dir= root_output_dir + gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
+        output_dir= root_output_dir + gender_train+'/Fold_'+str(fold)+'/output'+finetune_name+'/'
 
         base_model_name = cp["DEFAULT"].get("base_model_name")
         class_names = cp["DEFAULT"].get("class_names").split(",")
