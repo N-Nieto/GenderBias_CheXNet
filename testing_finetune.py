@@ -14,6 +14,16 @@ def main(fold,gender_train,gender_test):
     cp = ConfigParser()
     cp.read(config_file)
 
+    from keras import backend as K
+    import tensorflow as tf
+    import keras
+
+    K.tensorflow_backend._get_available_gpus()
+    config = tf.ConfigProto( device_count = {'GPU': 1} ) 
+    sess = tf.Session(config=config) 
+    print(sess)
+    keras.backend.set_session(sess)
+
     root_output_dir= cp["DEFAULT"].get("output_dir") 
 
     for finetune_name in ['','_finetune_100', '_finetune_500', '_finetune_1000', '_finetune_2500', '_finetune_5000', '_finetune_10000', '_finetune_20000']:
