@@ -254,5 +254,5 @@ if __name__ == "__main__":
     genders_train=['0%_female_images','100%_female_images']
 
     for gender in genders_train:
-        for i in range(folds):
+        for i in folds:
             main(fold=i,gender_train=gender)
