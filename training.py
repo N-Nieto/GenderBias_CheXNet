@@ -243,15 +243,18 @@ if __name__ == "__main__":
     # Instantiate the parser
     parser = argparse.ArgumentParser()
     parser.add_argument('fold', type=int, help='A required integer argument between 0 and 20 for target fold')
+    parser.add_argument('gender', help='A required argument to specify gender')
     args = parser.parse_args()
     fold = args.fold
     if fold < 20 and fold >= 0:
         folds = [fold] + [i for i in range(fold + 1, 20)] + [i for i in range(fold)]
     else:
         folds = [i for i in range(20)]
-
-
-    genders_train=['0%_female_images','100%_female_images']
+    
+    if args.gender == "male":
+        genders_train=['0%_female_images','100%_female_images']
+    else:
+        genders_train=['100%_female_images','0%_female_images']
 
     for gender in genders_train:
         for i in folds:
