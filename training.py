@@ -246,7 +246,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     fold = args.fold
     if fold < 20 and fold >= 0:
-        folds = [i for i in range(fold)] + [i for i in range(fold, 20)]
+        folds = [fold] + [i for i in range(fold + 1, 20)] + [i for i in range(fold)]
     else:
         folds = [i for i in range(20)]
 
