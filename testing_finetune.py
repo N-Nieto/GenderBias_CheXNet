@@ -104,6 +104,8 @@ def main(fold,gender_train,gender_test):
         np.savetxt(y_pred_dir, y_hat, delimiter=",")
         np.savetxt(y_true_dir, y, delimiter=",")
 
+        print(y_pred_dir, 'auc: ', roc_auc_score(y, y_hat))
+
 if __name__ == "__main__":
 
 	genders_train=['0%_female_images','100%_female_images']
