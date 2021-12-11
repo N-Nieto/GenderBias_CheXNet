@@ -242,8 +242,8 @@ if __name__ == "__main__":
 
     # Instantiate the parser
     parser = argparse.ArgumentParser()
-    parser.add_argument('fold', type=int, help='A required integer argument between 0 and 20 for target fold')
-    parser.add_argument('gender', help='A required argument to specify gender')
+    parser.add_argument("fold", type=int, help="the initial fold to train with")
+    parser.add_argument("-g", "--gender", default="female", help="specify gender to start with (default female)")
     args = parser.parse_args()
     fold = args.fold
     if fold < 20 and fold >= 0:
