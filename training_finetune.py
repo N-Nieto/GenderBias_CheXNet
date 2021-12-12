@@ -248,18 +248,20 @@ def main(fold, gender_train):
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('fold', type=int, help='A required integer argument between 0 and 20 for target fold')
+    parser.add_argument("fold", type=int, help="the initial fold to train with")
+    parser.add_argument("-g", "--gender", default="female", help="specify gender to start with (default female)")
     args = parser.parse_args()
     fold = args.fold
     if fold < 20 and fold >= 0:
         folds = [fold] + [i for i in range(fold + 1, 20)] + [i for i in range(fold)]
     else:
         folds = [i for i in range(20)]
-
-
-    genders_train=['0%_female_images','100%_female_images']
-    n_splits=20
+    
+    if args.gender == "male":
+        genders_train=['0%_female_images','100%_female_images']
+    else:
+        genders_train=['100%_female_images','0%_female_images']
 
     for gender in genders_train:
-        for i in range(n_splits):
+        for i in folds:
             main(fold=i,gender_train=gender)
