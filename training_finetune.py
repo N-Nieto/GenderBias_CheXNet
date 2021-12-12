@@ -234,7 +234,8 @@ def main(fold, gender_train):
                 validation_steps=validation_steps,
                 callbacks=callbacks,
                 class_weight=class_weights,
-                workers=generator_workers,
+                workers=1,
+                use_multiprocessing=False,
                 shuffle=False,
             )
 
