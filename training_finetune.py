@@ -34,7 +34,14 @@ def main(fold, gender_train):
     ############################################################################################# default config ####################################################################################################
 
     ############################################################################################# fine-tune config ####################################################################################################
-    for finetune_name in ['female_finetune_100', 'female_finetune_500', 'female_finetune_1000', 'female_finetune_2500', 'female_finetune_5000']:
+    if gender_train == "0%_female_images":
+        finetune_names = ['female_finetune_100', 'female_finetune_500', 'female_finetune_1000', 'female_finetune_2500', 'female_finetune_5000']
+        dev_file = 'female_finetune_dev'
+    else:
+        finetune_names = ['male_finetune_100', 'male_finetune_500', 'male_finetune_1000', 'male_finetune_2500', 'male_finetune_5000']
+        dev_file = 'male_finetune_dev'
+
+    for finetune_name in finetune_names:
         output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output/'
         image_source_dir = cp["DEFAULT"].get("image_source_dir")
         base_model_name = cp["DEFAULT"].get("base_model_name")
@@ -86,13 +93,13 @@ def main(fold, gender_train):
             print(f"backup config file to {output_dir}")
             shutil.copy(config_file, os.path.join(output_dir, os.path.split(config_file)[1]))
 
-            datasets = [finetune_name, "female_finetune_dev",]
+            datasets = [finetune_name, dev_file,]
             for dataset in datasets:
                 shutil.copy(os.path.join(dataset_csv_dir, f"{dataset}.csv"), output_dir)
 
             # get train/dev sample counts
             train_counts, train_pos_counts = get_sample_counts(output_dir, finetune_name, class_names)
-            dev_counts, _ = get_sample_counts(output_dir, "female_finetune_dev", class_names)
+            dev_counts, _ = get_sample_counts(output_dir, dev_file, class_names)
 
             # compute steps
             if train_steps == "auto":
@@ -161,7 +168,7 @@ def main(fold, gender_train):
                 steps=train_steps,
             )
             validation_sequence = AugmentedImageSequence(
-                dataset_csv_file=os.path.join(output_dir, "female_finetune_dev.csv"),
+                dataset_csv_file=os.path.join(output_dir, dev_file +".csv"),
                 class_names=class_names,
                 source_image_dir=image_source_dir,
                 batch_size=batch_size,
