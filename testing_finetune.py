@@ -107,16 +107,29 @@ def main(fold,gender_train,gender_test):
         print(y_pred_dir, 'auc: ', roc_auc_score(y, y_hat))
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("fold", type=int, help="the initial fold to train with")
+    parser.add_argument("-g", "--gender", default="female", help="specify gender to start with (default female)")
+    args = parser.parse_args()
+    fold = args.fold
+    if fold < 20 and fold >= 0:
+        folds = [fold] + [i for i in range(fold + 1, 20)] + [i for i in range(fold)]
+    else:
+        folds = [i for i in range(20)]
 
-	genders_train=['0%_female_images','100%_female_images']
-	genders_test= ['test_female','test_males']
-	n_splits=20
+    if args.gender == "male":
+        genders_train=['0%_female_images','100%_female_images']
+    else:
+        genders_train=['100%_female_images','0%_female_images']
+
+    genders_test= ['test_female','test_males']
 
 
-	for fold in range (n_splits):
-		for gender_train in genders_train:
-			for gender_test in genders_test:
-				main(fold=fold,gender_train=gender_train,gender_test=gender_test)
+    for fold in folds:
+        for gender_train in genders_train:
+            for gender_test in genders_test:
+                main(fold=fold,gender_train=gender_train,gender_test=gender_test)
 	
 
          
