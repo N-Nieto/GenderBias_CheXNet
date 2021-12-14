@@ -2,14 +2,6 @@
 echo What python file plus args would you like to run ex: training.py 1?
 read filename
 
-export GCSFUSE_REPO=gcsfuse-`lsb_release -c -s`
-echo "deb http://packages.cloud.google.com/apt $GCSFUSE_REPO main" | sudo tee /etc/apt/sources.list.d/gcsfuse.list
-curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-sudo apt-get update
-sudo apt-get install gcsfuse
-mkdir colab_directory
-gcsfuse --implicit-dirs gender-bias-data colab_directory
-
 MINICONDA_INSTALLER_SCRIPT=Miniconda3-4.5.4-Linux-x86_64.sh
 MINICONDA_PREFIX=/usr/local
 wget https://repo.continuum.io/miniconda/$MINICONDA_INSTALLER_SCRIPT
