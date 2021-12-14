@@ -40,12 +40,12 @@ def main(fold,gender_train,gender_test):
         image_dimension = cp["TRAIN"].getint("image_dimension")
 
         # test config
-        batch_size = cp["FINETUNE_TEST"].getint("batch_size")
-        test_steps = cp["FINETUNE_TEST"].get("test_steps")
-        use_best_weights = cp["FINETUNE_TEST"].getboolean("use_best_weights")
+        batch_size = cp["TEST"].getint("batch_size")
+        test_steps = cp["TEST"].get("test_steps")
+        use_best_weights = cp["TEST"].getboolean("use_best_weights")
 
         # parse weights file path
-        output_weights_name = cp["FINETUNE"].get("output_weights_name")
+        output_weights_name = cp["TEST"].get("output_weights_name")
         weights_path = os.path.join(output_dir, output_weights_name)
         best_weights_path = os.path.join(output_dir, f"best_{output_weights_name}")
 
