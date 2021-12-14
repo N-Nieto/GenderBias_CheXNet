@@ -45,7 +45,6 @@ def main(fold, gender_train):
     image_source_dir = cp["DEFAULT"].get("image_source_dir")
     base_model_name = cp["DEFAULT"].get("base_model_name")
     class_names = cp["DEFAULT"].get("class_names").split(",")
-
     use_trained_model_weights = cp["FINETUNE"].getboolean("use_trained_model_weights")
     use_base_model_weights = cp["FINETUNE"].getboolean("use_base_model_weights")
     use_best_weights = cp["FINETUNE"].getboolean("use_best_weights")
@@ -182,7 +181,7 @@ def main(fold, gender_train):
                 shuffle_on_epoch_end=False,
             )
 
-            results_output_weights_path = os.path.join(results_output_dir, results_output_weights_name)
+            results_output_weights_path = os.path.join(results_output_dir, output_weights_name)
             print(f"** set output weights path to: {results_output_weights_path} **")
 
             print("** check multiple gpu availability **")
@@ -268,6 +267,6 @@ if __name__ == "__main__":
     else:
         genders_train=['100%_female_images','0%_female_images']
 
-    for gender in genders_train:
-        for i in folds:
+    for i in folds:
+        for gender in genders_train:
             main(fold=i,gender_train=gender)
