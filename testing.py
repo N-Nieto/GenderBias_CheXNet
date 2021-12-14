@@ -26,11 +26,15 @@ def main(fold,gender_train,gender_test):
 
     root_output_dir= cp["DEFAULT"].get("output_dir") 
 
-    for finetune_name in ['','_finetune_100', '_finetune_500', '_finetune_1000', '_finetune_2500', '_finetune_5000']:
+    if gender_train == "0%_female_images":
+        test_names = ['', '_female_finetune_100', '_female_finetune_500', '_female_finetune_1000', '_female_finetune_2500', '_female_finetune_5000']
+    else:
+        test_names = ['', '_male_finetune_100', '_male_finetune_500', '_male_finetune_1000', '_male_finetune_2500', '_male_finetune_5000']
+
+    for finetune_name in test_names:
 
         # default config 
-        print(root_output_dir,gender_train)   
-        output_dir= root_output_dir + gender_train+'/Fold_'+str(fold)+'/output'+finetune_name+'/'
+        load_output_dir= root_output_dir + gender_train+'/Fold_'+str(fold)+'/output'+finetune_name+'/'
 
         base_model_name = cp["DEFAULT"].get("base_model_name")
         class_names = cp["DEFAULT"].get("class_names").split(",")
@@ -46,8 +50,8 @@ def main(fold,gender_train,gender_test):
 
         # parse weights file path
         output_weights_name = cp["TEST"].get("output_weights_name")
-        weights_path = os.path.join(output_dir, output_weights_name)
-        best_weights_path = os.path.join(output_dir, f"best_{output_weights_name}")
+        weights_path = os.path.join(load_output_dir, output_weights_name)
+        best_weights_path = os.path.join(load_output_dir, f"best_{output_weights_name}")
 
         # get test sample count
         test_counts, _ = get_sample_counts(root_output_dir+gender_train+'/Fold_'+str(fold),str(gender_test), class_names)
@@ -97,8 +101,8 @@ def main(fold,gender_train,gender_test):
         y_hat = model.predict_generator(test_sequence, verbose=1)
         y = test_sequence.get_y_true()
 
-        y_pred_dir = output_dir + "y_pred_run_" + str(fold)+"_train"+gender_train+"_"+gender_test+ ".csv"
-        y_true_dir = output_dir + "y_true_run_" + str(fold)+"_train"+gender_train+"_"+gender_test+ ".csv"
+        y_pred_dir = load_output_dir + "y_pred_run_" + str(fold)+"_train"+gender_train+"_"+finetune_name+"_"+gender_test+ ".csv"
+        y_true_dir = load_output_dir + "y_true_run_" + str(fold)+"_train"+gender_train+"_"+finetune_name+"_"+gender_test+ ".csv"
 
 
         np.savetxt(y_pred_dir, y_hat, delimiter=",")
