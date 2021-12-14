@@ -14,95 +14,122 @@ def main(fold,gender_train,gender_test):
     cp = ConfigParser()
     cp.read(config_file)
 
+    from keras import backend as K
+    import tensorflow as tf
+    import keras
+
+    K.tensorflow_backend._get_available_gpus()
+    config = tf.ConfigProto( device_count = {'GPU': 1} ) 
+    sess = tf.Session(config=config) 
+    print(sess)
+    keras.backend.set_session(sess)
+
     root_output_dir= cp["DEFAULT"].get("output_dir") 
 
-    # default config 
-    print(root_output_dir,gender_train)   
-    output_dir= root_output_dir + gender_train+'/Fold_'+str(fold)+'/output/'
+    for finetune_name in ['','_finetune_100', '_finetune_500', '_finetune_1000', '_finetune_2500', '_finetune_5000']:
 
-    base_model_name = cp["DEFAULT"].get("base_model_name")
-    class_names = cp["DEFAULT"].get("class_names").split(",")
-    image_source_dir = cp["DEFAULT"].get("image_source_dir")
+        # default config 
+        print(root_output_dir,gender_train)   
+        output_dir= root_output_dir + gender_train+'/Fold_'+str(fold)+'/output'+finetune_name+'/'
 
-    # train config
-    image_dimension = cp["TRAIN"].getint("image_dimension")
+        base_model_name = cp["DEFAULT"].get("base_model_name")
+        class_names = cp["DEFAULT"].get("class_names").split(",")
+        image_source_dir = cp["DEFAULT"].get("image_source_dir")
 
-    # test config
-    batch_size = cp["TEST"].getint("batch_size")
-    test_steps = cp["TEST"].get("test_steps")
-    use_best_weights = cp["TEST"].getboolean("use_best_weights")
+        # train config
+        image_dimension = cp["TRAIN"].getint("image_dimension")
 
-    # parse weights file path
-    output_weights_name = cp["TRAIN"].get("output_weights_name")
-    weights_path = os.path.join(output_dir, output_weights_name)
-    best_weights_path = os.path.join(output_dir, f"best_{output_weights_name}")
+        # test config
+        batch_size = cp["FINETUNE_TEST"].getint("batch_size")
+        test_steps = cp["FINETUNE_TEST"].get("test_steps")
+        use_best_weights = cp["FINETUNE_TEST"].getboolean("use_best_weights")
 
-    # get test sample count
-    test_counts, _ = get_sample_counts(root_output_dir+gender_train+'/Fold_'+str(fold),str(gender_test), class_names)
+        # parse weights file path
+        output_weights_name = cp["FINETUNE"].get("output_weights_name")
+        weights_path = os.path.join(output_dir, output_weights_name)
+        best_weights_path = os.path.join(output_dir, f"best_{output_weights_name}")
 
-    # compute steps
-    if test_steps == "auto":
-        test_steps = int(test_counts / batch_size)
-    else:
-        try:
-            test_steps = int(test_steps)
-        except ValueError:
-            raise ValueError(f"""
-                test_steps: {test_steps} is invalid,
-                please use 'auto' or integer.
-                """)
-    print(f"** test_steps: {test_steps} **")
+        # get test sample count
+        test_counts, _ = get_sample_counts(root_output_dir+gender_train+'/Fold_'+str(fold),str(gender_test), class_names)
 
-    print("** load model **")
-    if use_best_weights:
-        print("** use best weights **")
-        model_weights_path = best_weights_path
-    else:
-        print("** use last weights **")
-        model_weights_path = weights_path
-    model_factory = ModelFactory()
-    model = model_factory.get_model(
-        class_names,
-        model_name=base_model_name,
-        use_base_weights=False,
-        weights_path=model_weights_path)
+        # compute steps
+        if test_steps == "auto":
+            test_steps = int(test_counts / batch_size)
+        else:
+            try:
+                test_steps = int(test_steps)
+            except ValueError:
+                raise ValueError(f"""
+                    test_steps: {test_steps} is invalid,
+                    please use 'auto' or integer.
+                    """)
+        print(f"** test_steps: {test_steps} **")
 
-    print("** load test generator **")
-    test_sequence = AugmentedImageSequence(
-        dataset_csv_file=os.path.join(root_output_dir+gender_train+'/Fold_'+str(fold), str(gender_test)+".csv"),
-     
-        class_names=class_names,
-        source_image_dir=image_source_dir,
-        batch_size=batch_size,
-        target_size=(image_dimension, image_dimension),
-        augmenter=None,
-        steps=test_steps,
-        shuffle_on_epoch_end=False,
-    )
+        print("** load model **")
+        if use_best_weights:
+            print("** use best weights **")
+            model_weights_path = best_weights_path
+        else:
+            print("** use last weights **")
+            model_weights_path = weights_path
+        model_factory = ModelFactory()
+        model = model_factory.get_model(
+            class_names,
+            model_name=base_model_name,
+            use_base_weights=False,
+            weights_path=model_weights_path)
 
-    print("** make prediction **")
+        print("** load test generator **")
+        test_sequence = AugmentedImageSequence(
+            dataset_csv_file=os.path.join(root_output_dir+gender_train+'/Fold_'+str(fold), str(gender_test)+".csv"),
+        
+            class_names=class_names,
+            source_image_dir=image_source_dir,
+            batch_size=batch_size,
+            target_size=(image_dimension, image_dimension),
+            augmenter=None,
+            steps=test_steps,
+            shuffle_on_epoch_end=False,
+        )
 
-    y_hat = model.predict_generator(test_sequence, verbose=1)
-    y = test_sequence.get_y_true()
+        print("** make prediction **")
 
-    y_pred_dir = output_dir + "y_pred_run_" + str(fold)+"_train"+gender_train+"_"+gender_test+ ".csv"
-    y_true_dir = output_dir + "y_true_run_" + str(fold)+"_train"+gender_train+"_"+gender_test+ ".csv"
+        y_hat = model.predict_generator(test_sequence, verbose=1)
+        y = test_sequence.get_y_true()
+
+        y_pred_dir = output_dir + "y_pred_run_" + str(fold)+"_train"+gender_train+"_"+gender_test+ ".csv"
+        y_true_dir = output_dir + "y_true_run_" + str(fold)+"_train"+gender_train+"_"+gender_test+ ".csv"
 
 
-    np.savetxt(y_pred_dir, y_hat, delimiter=",")
-    np.savetxt(y_true_dir, y, delimiter=",")
+        np.savetxt(y_pred_dir, y_hat, delimiter=",")
+        np.savetxt(y_true_dir, y, delimiter=",")
+
+        print(y_pred_dir, 'auc: ', roc_auc_score(y, y_hat))
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("fold", type=int, help="the initial fold to train with")
+    parser.add_argument("-g", "--gender", default="female", help="specify gender to start with (default female)")
+    args = parser.parse_args()
+    fold = args.fold
+    if fold < 20 and fold >= 0:
+        folds = [fold] + [i for i in range(fold + 1, 20)] + [i for i in range(fold)]
+    else:
+        folds = [i for i in range(20)]
 
-	genders_train=['0%_female_images','100%_female_images']
-	genders_test= ['test_female','test_males']
-	n_splits=20
+    if args.gender == "male":
+        genders_train=['0%_female_images','100%_female_images']
+    else:
+        genders_train=['100%_female_images','0%_female_images']
+
+    genders_test= ['test_female','test_males']
 
 
-	for fold in range (n_splits):
-		for gender_train in genders_train:
-			for gender_test in genders_test:
-				main(fold=fold,gender_train=gender_train,gender_test=gender_test)
+    for fold in folds:
+        for gender_train in genders_train:
+            for gender_test in genders_test:
+                main(fold=fold,gender_train=gender_train,gender_test=gender_test)
 	
 
          

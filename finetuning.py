@@ -41,65 +41,69 @@ def main(fold, gender_train):
         finetune_names = ['male_finetune_100', 'male_finetune_500', 'male_finetune_1000', 'male_finetune_2500', 'male_finetune_5000']
         dev_file = 'male_finetune_dev'
 
-    for finetune_name in finetune_names:
-        output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output/'
-        image_source_dir = cp["DEFAULT"].get("image_source_dir")
-        base_model_name = cp["DEFAULT"].get("base_model_name")
-        class_names = cp["DEFAULT"].get("class_names").split(",")
+    load_output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output/'
+    image_source_dir = cp["DEFAULT"].get("image_source_dir")
+    base_model_name = cp["DEFAULT"].get("base_model_name")
+    class_names = cp["DEFAULT"].get("class_names").split(",")
 
-        use_trained_model_weights = cp["FINETUNE"].getboolean("use_trained_model_weights")
-        use_base_model_weights = cp["FINETUNE"].getboolean("use_base_model_weights")
-        use_best_weights = cp["FINETUNE"].getboolean("use_best_weights")
-        output_weights_name = cp["FINETUNE"].get("output_weights_name")
-        epochs = cp["FINETUNE"].getint("epochs")
-        batch_size = cp["FINETUNE"].getint("batch_size")
-        initial_learning_rate = cp["FINETUNE"].getfloat("initial_learning_rate")
-        generator_workers = cp["FINETUNE"].getint("generator_workers")
-        image_dimension = cp["FINETUNE"].getint("image_dimension")
-        train_steps = cp["FINETUNE"].get("train_steps")
-        patience_reduce_lr = cp["FINETUNE"].getint("patience_reduce_lr")
-        min_lr = cp["FINETUNE"].getfloat("min_lr")
-        validation_steps = cp["FINETUNE"].get("validation_steps")
-        positive_weights_multiply = cp["FINETUNE"].getfloat("positive_weights_multiply")
-        print('use trained model weights:', use_trained_model_weights)
+    use_trained_model_weights = cp["FINETUNE"].getboolean("use_trained_model_weights")
+    use_base_model_weights = cp["FINETUNE"].getboolean("use_base_model_weights")
+    use_best_weights = cp["FINETUNE"].getboolean("use_best_weights")
+    output_weights_name = cp["FINETUNE"].get("output_weights_name")
+    epochs = cp["FINETUNE"].getint("epochs")
+    batch_size = cp["FINETUNE"].getint("batch_size")
+    initial_learning_rate = cp["FINETUNE"].getfloat("initial_learning_rate")
+    generator_workers = cp["FINETUNE"].getint("generator_workers")
+    image_dimension = cp["FINETUNE"].getint("image_dimension")
+    train_steps = cp["FINETUNE"].get("train_steps")
+    patience_reduce_lr = cp["FINETUNE"].getint("patience_reduce_lr")
+    min_lr = cp["FINETUNE"].getfloat("min_lr")
+    validation_steps = cp["FINETUNE"].get("validation_steps")
+    positive_weights_multiply = cp["FINETUNE"].getfloat("positive_weights_multiply")
+    print('use trained model weights:', use_trained_model_weights)
 
-        dataset_csv_dir = root_output_dir+gender_train+'/Fold_'+str(fold)+'/'
-        # if previously trained weights is used, never re-split
-        if use_trained_model_weights:
-            # resuming mode
-            print("** use trained model weights **")
-            # load training status for resuming
-            training_stats_file = os.path.join(output_dir, ".training_stats.json")
-            if os.path.isfile(training_stats_file):
-                # TODO: add loading previous learning rate?
-                training_stats = json.load(open(training_stats_file))
-            else:
-                training_stats = {}
+    dataset_csv_dir = root_output_dir+gender_train+'/Fold_'+str(fold)+'/'
+    # if previously trained weights is used, never re-split
+    if use_trained_model_weights:
+        # resuming mode
+        print("** use trained model weights **")
+        # load training status for resuming
+        training_stats_file = os.path.join(load_output_dir, ".training_stats.json")
+        if os.path.isfile(training_stats_file):
+            # TODO: add loading previous learning rate?
+            training_stats = json.load(open(training_stats_file))
         else:
-            # start over
             training_stats = {}
+    else:
+        # start over
+        training_stats = {}
 
+    show_model_summary = cp["FINETUNE"].getboolean("show_model_summary")
+    # end parser config
 
-        show_model_summary = cp["FINETUNE"].getboolean("show_model_summary")
-        # end parser config
-
-        running_flag_file = os.path.join(output_dir, ".training.lock")
+    for finetune_name in finetune_names:
+        results_output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
+        # check output_dir, create it if not exists
+        if not os.path.isdir(results_output_dir):
+            os.makedirs(results_output_dir)
+        
+        running_flag_file = os.path.join(results_output_dir, ".training.lock")
         if os.path.isfile(running_flag_file):
             raise RuntimeError("A process is running in this directory!!!")
         else:
             open(running_flag_file, "a").close()
 
         try:
-            print(f"backup config file to {output_dir}")
-            shutil.copy(config_file, os.path.join(output_dir, os.path.split(config_file)[1]))
+            print(f"backup config file to {results_output_dir}")
+            shutil.copy(config_file, os.path.join(results_output_dir, os.path.split(config_file)[1]))
 
             datasets = [finetune_name, dev_file,]
             for dataset in datasets:
-                shutil.copy(os.path.join(dataset_csv_dir, f"{dataset}.csv"), output_dir)
+                shutil.copy(os.path.join(dataset_csv_dir, f"{dataset}.csv"), results_output_dir)
 
             # get train/dev sample counts
-            train_counts, train_pos_counts = get_sample_counts(output_dir, finetune_name, class_names)
-            dev_counts, _ = get_sample_counts(output_dir, dev_file, class_names)
+            train_counts, train_pos_counts = get_sample_counts(results_output_dir, finetune_name, class_names)
+            dev_counts, _ = get_sample_counts(results_output_dir, dev_file, class_names)
 
             # compute steps
             if train_steps == "auto":
@@ -139,9 +143,9 @@ def main(fold, gender_train):
             print("** load model **")
             if use_trained_model_weights:
                 if use_best_weights:
-                    model_weights_file = os.path.join(output_dir, f"best_{output_weights_name}")
+                    model_weights_file = os.path.join(load_output_dir, f"best_{output_weights_name}")
                 else:
-                    model_weights_file = os.path.join(output_dir, output_weights_name)
+                    model_weights_file = os.path.join(load_output_dir, output_weights_name)
             else:
                 model_weights_file = None
 
@@ -159,7 +163,7 @@ def main(fold, gender_train):
 
             print("** create image generators **")
             train_sequence = AugmentedImageSequence(
-                dataset_csv_file=os.path.join(output_dir, finetune_name+".csv"),
+                dataset_csv_file=os.path.join(results_output_dir, finetune_name+".csv"),
                 class_names=class_names,
                 source_image_dir=image_source_dir,
                 batch_size=batch_size,
@@ -168,7 +172,7 @@ def main(fold, gender_train):
                 steps=train_steps,
             )
             validation_sequence = AugmentedImageSequence(
-                dataset_csv_file=os.path.join(output_dir, dev_file +".csv"),
+                dataset_csv_file=os.path.join(results_output_dir, dev_file +".csv"),
                 class_names=class_names,
                 source_image_dir=image_source_dir,
                 batch_size=batch_size,
@@ -178,14 +182,8 @@ def main(fold, gender_train):
                 shuffle_on_epoch_end=False,
             )
 
-            output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
-
-            # check output_dir, create it if not exists
-            if not os.path.isdir(output_dir):
-                os.makedirs(output_dir)
-
-            output_weights_path = os.path.join(output_dir, output_weights_name)
-            print(f"** set output weights path to: {output_weights_path} **")
+            results_output_weights_path = os.path.join(results_output_dir, results_output_weights_name)
+            print(f"** set output weights path to: {results_output_weights_path} **")
 
             print("** check multiple gpu availability **")
             gpus = len(os.getenv("CUDA_VISIBLE_DEVICES", "1").split(","))
@@ -195,13 +193,13 @@ def main(fold, gender_train):
                 model_train = multi_gpu_model(model, gpus)
                 # FIXME: currently (Keras 2.1.2) checkpoint doesn't work with multi_gpu_model
                 checkpoint = MultiGPUModelCheckpoint(
-                    filepath=output_weights_path,
+                    filepath=results_output_weights_path,
                     base_model=model,
                 )
             else:
                 model_train = model
                 checkpoint = ModelCheckpoint(
-                    output_weights_path,
+                    results_output_weights_path,
                     save_weights_only=True,
                     save_best_only=True,
                     verbose=1,
@@ -213,7 +211,7 @@ def main(fold, gender_train):
             auroc = MultipleClassAUROC(
                 sequence=validation_sequence,
                 class_names=class_names,
-                weights_path=output_weights_path,
+                weights_path=results_output_weights_path,
                 stats=training_stats,
                 workers=generator_workers,
             )
@@ -241,7 +239,7 @@ def main(fold, gender_train):
 
             # dump history
             print("** dump history **")
-            with open(os.path.join(output_dir, "finetune_history.pkl"), "wb") as f:
+            with open(os.path.join(results_output_dir, "finetune_history.pkl"), "wb") as f:
                 pickle.dump({
                     "history": history.history,
                     "auroc": auroc.aurocs,
