@@ -49,7 +49,7 @@ def main(fold,gender_train,gender_test):
         use_best_weights = cp["TEST"].getboolean("use_best_weights")
 
         # parse weights file path
-        output_weights_name = cp["TEST"].get("output_weights_name")
+        output_weights_name = cp["TRAIN"].get("output_weights_name")
         weights_path = os.path.join(load_output_dir, output_weights_name)
         best_weights_path = os.path.join(load_output_dir, f"best_{output_weights_name}")
 
@@ -135,5 +135,3 @@ if __name__ == "__main__":
             for gender_test in genders_test:
                 main(fold=fold,gender_train=gender_train,gender_test=gender_test)
 	
-
-         
