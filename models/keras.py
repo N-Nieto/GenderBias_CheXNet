@@ -60,7 +60,7 @@ class ModelFactory:
         return self.models_[model_name]["input_shape"][:2]
 
     def get_model(self, class_names, model_name="DenseNet121", use_base_weights=True,
-                  weights_path=None, input_shape=None, finetune=False):
+                  weights_path=None, input_shape=None, finetune=False, freeze=False):
 
         if use_base_weights is True:
             base_weights = "imagenet"
@@ -97,6 +97,10 @@ class ModelFactory:
 
         print("number of layers: ", len(model.layers))
         print("layers: ", model.layers)
+
+        if freeze:
+            for layer in model.layers[:411]:
+                layer.trainable = False
 
         # set the first 25 layers (up to the last conv block)
         # to non-trainable (weights will not be updated)

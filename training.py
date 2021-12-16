@@ -14,7 +14,7 @@ from weights import get_class_weights
 from augmenter import augmenter
 
 
-def main(fold,gender_train):
+def main(fold,gender_train, freeze):
     ############################################################################################# parser config ####################################################################################################
     config_file = 'config_file.ini'
     cp = ConfigParser()
@@ -143,7 +143,9 @@ def main(fold,gender_train):
             model_name=base_model_name,
             use_base_weights=use_base_model_weights,
             weights_path=model_weights_file,
-            input_shape=(image_dimension, image_dimension, 3))
+            input_shape=(image_dimension, image_dimension, 3),
+            freeze=freeze
+        )
 
         if show_model_summary:
             print(model.summary())
@@ -244,6 +246,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("fold", type=int, help="the initial fold to train with")
     parser.add_argument("-g", "--gender", default="female", help="specify gender to start with (default female)")
+    parser.add_argument("-f", "--freeze", default="false", help="specify whether to freeze some of the laters")
     args = parser.parse_args()
     fold = args.fold
     if fold < 20 and fold >= 0:
@@ -256,6 +259,11 @@ if __name__ == "__main__":
     else:
         genders_train=['100%_female_images','0%_female_images']
 
+    if args.freeze == "true" or args.freeze == 1:
+        freeze = True
+    else:
+        freeze = False
+
     for gender in genders_train:
         for i in folds:
-            main(fold=i,gender_train=gender)
+            main(fold=i,gender_train=gender, freeze=freeze)
