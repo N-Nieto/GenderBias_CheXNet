@@ -101,6 +101,6 @@ class ModelFactory:
         # set the first 25 layers (up to the last conv block)
         # to non-trainable (weights will not be updated)
         if finetune:
-            for layer in model.layers[:411]:
+            for layer in model.layers[:-1]:
                 layer.trainable = False
         return model
