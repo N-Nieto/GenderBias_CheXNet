@@ -23,5 +23,5 @@ pip list
 
 python $filename
 
-gsutil -m cp -r /content/colab_directory/Cross_validation_splits/100%_female_images gs://gender-bias-data/Cross_validation_splits/100%_female_images
-gsutil -m cp -r /content/colab_directory/Cross_validation_splits/0%_female_images gs://gender-bias-data/Cross_validation_splits/0%_female_images
+gsutil -m cp -r /content/colab_directory/Cross_validation_splits/100%_female_images gs://gender-bias-data/Cross_validation_splits
+gsutil -m cp -r /content/colab_directory/Cross_validation_splits/0%_female_images gs://gender-bias-data/Cross_validation_splits
