@@ -8,7 +8,7 @@ from sklearn.metrics import roc_auc_score, accuracy_score, f1_score
 from utility import get_sample_counts
 
 
-def main(fold,gender_train,gender_test):
+def main(fold,gender_train,gender_test, simple):
     # parser config
     config_file = 'config_file.ini'
     cp = ConfigParser()
@@ -25,11 +25,17 @@ def main(fold,gender_train,gender_test):
     keras.backend.set_session(sess)
 
     root_output_dir= cp["DEFAULT"].get("output_dir") 
-
+    
     if gender_train == "0%_female_images":
-        test_names = ['', '_female_finetune_100', '_female_finetune_500', '_female_finetune_1000', '_female_finetune_2500', '_female_finetune_5000']
+        if simple:
+            test_names = ['']
+        else:
+            test_names = ['', '_female_finetune_100', '_female_finetune_500', '_female_finetune_1000', '_female_finetune_2500', '_female_finetune_5000']
     else:
-        test_names = ['', '_male_finetune_100', '_male_finetune_500', '_male_finetune_1000', '_male_finetune_2500', '_male_finetune_5000']
+        if simple:
+            test_names = ['']
+        else:
+            test_names = ['', '_male_finetune_100', '_male_finetune_500', '_male_finetune_1000', '_male_finetune_2500', '_male_finetune_5000']
 
     for finetune_name in test_names:
 
@@ -115,6 +121,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("fold", type=int, help="the initial fold to train with")
     parser.add_argument("-g", "--gender", default="female", help="specify gender to start with (default female)")
+    parser.add_argument("-s", "--simple", default="simple", help="specify whether to test finetuning as well")
     args = parser.parse_args()
     fold = args.fold
     if fold < 20 and fold >= 0:
@@ -129,9 +136,14 @@ if __name__ == "__main__":
 
     genders_test= ['test_female','test_males']
 
+    if args.simple =="simple":
+        simple=True
+    else:
+        simple=False
+
 
     for fold in folds:
         for gender_train in genders_train:
             for gender_test in genders_test:
-                main(fold=fold,gender_train=gender_train,gender_test=gender_test)
+                main(fold=fold,gender_train=gender_train,gender_test=gender_test, simple=simple)
 	
