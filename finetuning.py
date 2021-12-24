@@ -86,7 +86,10 @@ def main(fold, gender_train, use_learned_weights):
     # end parser config
 
     for finetune_name in finetune_names:
-        results_output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
+        if use_learned_weights:
+            results_output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
+        else:
+            results_output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name.split("_")[-1]+'/'
         # check output_dir, create it if not exists
         if not os.path.isdir(results_output_dir):
             os.makedirs(results_output_dir)
