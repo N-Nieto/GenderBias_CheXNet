@@ -14,7 +14,7 @@ from weights import get_class_weights
 from augmenter import augmenter
 
 
-def main(fold, gender_train):
+def main(fold, gender_train, use_learned_weights):
     ############################################################################################# parser config ####################################################################################################
     config_file = 'config_file.ini'
     cp = ConfigParser()
@@ -45,9 +45,14 @@ def main(fold, gender_train):
     image_source_dir = cp["DEFAULT"].get("image_source_dir")
     base_model_name = cp["DEFAULT"].get("base_model_name")
     class_names = cp["DEFAULT"].get("class_names").split(",")
-    use_trained_model_weights = cp["FINETUNE"].getboolean("use_trained_model_weights")
-    use_base_model_weights = cp["FINETUNE"].getboolean("use_base_model_weights")
-    use_best_weights = cp["FINETUNE"].getboolean("use_best_weights")
+    if use_learned_weights:
+        use_trained_model_weights = cp["FINETUNE"].getboolean("use_trained_model_weights")
+        use_base_model_weights = cp["FINETUNE"].getboolean("use_base_model_weights")
+        use_best_weights = cp["FINETUNE"].getboolean("use_best_weights")
+    else:
+        use_trained_model_weights = cp["TRAIN"].getboolean("use_trained_model_weights")
+        use_base_model_weights = cp["TRAIN"].getboolean("use_base_model_weights")
+        use_best_weights = cp["TRAIN"].getboolean("use_best_weights")
     output_weights_name = cp["FINETUNE"].get("output_weights_name")
     epochs = cp["FINETUNE"].getint("epochs")
     batch_size = cp["FINETUNE"].getint("batch_size")
@@ -255,6 +260,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("fold", type=int, help="the initial fold to train with")
     parser.add_argument("-g", "--gender", default="female", help="specify gender to start with (default female)")
+    parser.add_argument("-t", "--usetrainingweights", default="False", help="decide whether to finetune existing weights or start from scratch")
     args = parser.parse_args()
     fold = args.fold
     if fold < 20 and fold >= 0:
@@ -267,6 +273,11 @@ if __name__ == "__main__":
     else:
         genders_train=['100%_female_images','0%_female_images']
 
+    if args.usetrainingweights == "False":
+        ulw=False
+    else:
+        ulw=True
+
     for i in folds:
         for gender in genders_train:
-            main(fold=i,gender_train=gender)
+            main(fold=i,gender_train=gender, use_learned_weights=ulw)
