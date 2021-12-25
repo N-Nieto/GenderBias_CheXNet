@@ -14,7 +14,7 @@ from weights import get_class_weights
 from augmenter import augmenter
 
 
-def main(fold, gender_train, use_learned_weights):
+def main(fold, gender_train, freeze):
     ############################################################################################# parser config ####################################################################################################
     config_file = 'config_file.ini'
     cp = ConfigParser()
@@ -45,14 +45,9 @@ def main(fold, gender_train, use_learned_weights):
     image_source_dir = cp["DEFAULT"].get("image_source_dir")
     base_model_name = cp["DEFAULT"].get("base_model_name")
     class_names = cp["DEFAULT"].get("class_names").split(",")
-    if use_learned_weights:
-        use_trained_model_weights = cp["FINETUNE"].getboolean("use_trained_model_weights")
-        use_base_model_weights = cp["FINETUNE"].getboolean("use_base_model_weights")
-        use_best_weights = cp["FINETUNE"].getboolean("use_best_weights")
-    else:
-        use_trained_model_weights = cp["TRAIN"].getboolean("use_trained_model_weights")
-        use_base_model_weights = cp["TRAIN"].getboolean("use_base_model_weights")
-        use_best_weights = cp["TRAIN"].getboolean("use_best_weights")
+    use_trained_model_weights = cp["FINETUNE"].getboolean("use_trained_model_weights")
+    use_base_model_weights = cp["FINETUNE"].getboolean("use_base_model_weights")
+    use_best_weights = cp["FINETUNE"].getboolean("use_best_weights")
     output_weights_name = cp["FINETUNE"].get("output_weights_name")
     epochs = cp["FINETUNE"].getint("epochs")
     batch_size = cp["FINETUNE"].getint("batch_size")
@@ -86,10 +81,7 @@ def main(fold, gender_train, use_learned_weights):
     # end parser config
 
     for finetune_name in finetune_names:
-        if use_learned_weights:
-            results_output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
-        else:
-            results_output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name.split("_")[-1]+'/'
+        results_output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
         # check output_dir, create it if not exists
         if not os.path.isdir(results_output_dir):
             os.makedirs(results_output_dir)
@@ -163,7 +155,7 @@ def main(fold, gender_train, use_learned_weights):
                 use_base_weights=use_base_model_weights,
                 weights_path=model_weights_file,
                 input_shape=(image_dimension, image_dimension, 3),
-                finetune=True)
+                finetune=freeze)
 
             if show_model_summary:
                 print(model.summary())
@@ -263,9 +255,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("fold", type=int, help="the initial fold to train with")
     parser.add_argument("-g", "--gender", default="female", help="specify gender to start with (default female)")
-    parser.add_argument("-t", "--usetrainingweights", default="False", help="decide whether to finetune existing weights or start from scratch")
+    parser.add_argument("-f", "--freeze", default="false", help="specify whether to freeze some of the laters")
     args = parser.parse_args()
     fold = args.fold
+   
     if fold < 20 and fold >= 0:
         folds = [fold] + [i for i in range(fold + 1, 20)] + [i for i in range(fold)]
     else:
@@ -276,11 +269,11 @@ if __name__ == "__main__":
     else:
         genders_train=['100%_female_images','0%_female_images']
 
-    if args.usetrainingweights == "False":
-        ulw=False
+    if args.freeze == "true" or args.freeze == 1:
+        freeze = True
     else:
-        ulw=True
+        freeze = False
 
     for i in folds:
         for gender in genders_train:
-            main(fold=i,gender_train=gender, use_learned_weights=ulw)
+            main(fold=i,gender_train=gender, freeze=freeze)

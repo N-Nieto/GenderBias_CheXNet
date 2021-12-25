@@ -1,5 +1,5 @@
 #!/bin/bash
-echo What python file plus args would you like to run ex: training.py 0 -g female?
+echo What python file plus args would you like to run ex: training.py 0 -g female -s true?
 read filename
 
 MINICONDA_INSTALLER_SCRIPT=Miniconda3-4.5.4-Linux-x86_64.sh
