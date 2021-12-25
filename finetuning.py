@@ -41,46 +41,46 @@ def main(fold, gender_train, freeze):
         finetune_names = ['male_finetune_1000', 'male_finetune_500', 'male_finetune_100', 'male_finetune_2500', 'male_finetune_5000']
         dev_file = 'male_finetune_dev'
 
-    load_output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output/'
-    image_source_dir = cp["DEFAULT"].get("image_source_dir")
-    base_model_name = cp["DEFAULT"].get("base_model_name")
-    class_names = cp["DEFAULT"].get("class_names").split(",")
-    use_trained_model_weights = cp["FINETUNE"].getboolean("use_trained_model_weights")
-    use_base_model_weights = cp["FINETUNE"].getboolean("use_base_model_weights")
-    use_best_weights = cp["FINETUNE"].getboolean("use_best_weights")
-    output_weights_name = cp["FINETUNE"].get("output_weights_name")
-    epochs = cp["FINETUNE"].getint("epochs")
-    batch_size = cp["FINETUNE"].getint("batch_size")
-    initial_learning_rate = cp["FINETUNE"].getfloat("initial_learning_rate")
-    generator_workers = cp["FINETUNE"].getint("generator_workers")
-    image_dimension = cp["FINETUNE"].getint("image_dimension")
-    train_steps = cp["FINETUNE"].get("train_steps")
-    patience_reduce_lr = cp["FINETUNE"].getint("patience_reduce_lr")
-    min_lr = cp["FINETUNE"].getfloat("min_lr")
-    validation_steps = cp["FINETUNE"].get("validation_steps")
-    positive_weights_multiply = cp["FINETUNE"].getfloat("positive_weights_multiply")
-    print('use trained model weights:', use_trained_model_weights)
-
-    dataset_csv_dir = root_output_dir+gender_train+'/Fold_'+str(fold)+'/'
-    # if previously trained weights is used, never re-split
-    if use_trained_model_weights:
-        # resuming mode
-        print("** use trained model weights **")
-        # load training status for resuming
-        training_stats_file = os.path.join(load_output_dir, ".training_stats.json")
-        if os.path.isfile(training_stats_file):
-            # TODO: add loading previous learning rate?
-            training_stats = json.load(open(training_stats_file))
-        else:
-            training_stats = {}
-    else:
-        # start over
-        training_stats = {}
-
-    show_model_summary = cp["FINETUNE"].getboolean("show_model_summary")
-    # end parser config
-
     for finetune_name in finetune_names:
+        load_output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output/'
+        image_source_dir = cp["DEFAULT"].get("image_source_dir")
+        base_model_name = cp["DEFAULT"].get("base_model_name")
+        class_names = cp["DEFAULT"].get("class_names").split(",")
+        use_trained_model_weights = cp["FINETUNE"].getboolean("use_trained_model_weights")
+        use_base_model_weights = cp["FINETUNE"].getboolean("use_base_model_weights")
+        use_best_weights = cp["FINETUNE"].getboolean("use_best_weights")
+        output_weights_name = cp["FINETUNE"].get("output_weights_name")
+        epochs = cp["FINETUNE"].getint("epochs")
+        batch_size = cp["FINETUNE"].getint("batch_size")
+        initial_learning_rate = cp["FINETUNE"].getfloat("initial_learning_rate")
+        generator_workers = cp["FINETUNE"].getint("generator_workers")
+        image_dimension = cp["FINETUNE"].getint("image_dimension")
+        train_steps = cp["FINETUNE"].get("train_steps")
+        patience_reduce_lr = cp["FINETUNE"].getint("patience_reduce_lr")
+        min_lr = cp["FINETUNE"].getfloat("min_lr")
+        validation_steps = cp["FINETUNE"].get("validation_steps")
+        positive_weights_multiply = cp["FINETUNE"].getfloat("positive_weights_multiply")
+        print('use trained model weights:', use_trained_model_weights)
+
+        dataset_csv_dir = root_output_dir+gender_train+'/Fold_'+str(fold)+'/'
+        # if previously trained weights is used, never re-split
+        if use_trained_model_weights:
+            # resuming mode
+            print("** use trained model weights **")
+            # load training status for resuming
+            training_stats_file = os.path.join(load_output_dir, ".training_stats.json")
+            if os.path.isfile(training_stats_file):
+                # TODO: add loading previous learning rate?
+                training_stats = json.load(open(training_stats_file))
+            else:
+                training_stats = {}
+        else:
+            # start over
+            training_stats = {}
+
+        show_model_summary = cp["FINETUNE"].getboolean("show_model_summary")
+        # end parser config
+
         results_output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
         # check output_dir, create it if not exists
         if not os.path.isdir(results_output_dir):
