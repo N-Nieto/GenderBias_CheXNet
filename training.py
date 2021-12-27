@@ -37,7 +37,7 @@ def main(fold,gender_train, freeze, small):
     base_model_name = cp["DEFAULT"].get("base_model_name")
     class_names = cp["DEFAULT"].get("class_names").split(",")
     if small:
-        for filename in ['_small_5000', '_small_10000']:
+        for filename in ['_small_20000', '_small_5000', '_small_10000']:
     ############################################################################################# train config ####################################################################################################
             output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output'+filename+'/'
             use_base_model_weights = cp["TRAIN"].getboolean("use_base_model_weights")
