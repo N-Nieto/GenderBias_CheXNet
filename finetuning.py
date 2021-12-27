@@ -38,7 +38,7 @@ def main(fold, gender_train, freeze):
         finetune_names = ['female_finetune_100', 'female_finetune_500', 'female_finetune_1000', 'female_finetune_2500', 'female_finetune_5000']
         dev_file = 'female_finetune_dev'
     else:
-        finetune_names = ['male_finetune_1000', 'male_finetune_500', 'male_finetune_100', 'male_finetune_2500', 'male_finetune_5000']
+        finetune_names = ['male_finetune_100', 'male_finetune_500', 'male_finetune_1000', 'male_finetune_2500', 'male_finetune_5000']
         dev_file = 'male_finetune_dev'
 
     for finetune_name in finetune_names:
