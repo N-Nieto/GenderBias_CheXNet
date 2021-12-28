@@ -14,7 +14,7 @@ from weights import get_class_weights
 from augmenter import augmenter
 
 
-def main(fold,gender_train, finetune, small):
+def main(fold,gender_train, oversample, small, kenny):
     ############################################################################################# parser config ####################################################################################################
     config_file = 'config_file.ini'
     cp = ConfigParser()
@@ -36,8 +36,13 @@ def main(fold,gender_train, finetune, small):
     image_source_dir = cp["DEFAULT"].get("image_source_dir")
     base_model_name = cp["DEFAULT"].get("base_model_name")
     class_names = cp["DEFAULT"].get("class_names").split(",")
+    if kenny:
+        filenames = ['_small_5000']
+    else:
+        filenames = ['_small_10000', '_small_20000']
+    
     if small:
-        for filename in ['_small_20000', '_small_5000', '_small_10000']:
+        for filename in filenames:
     ############################################################################################# train config ####################################################################################################
             output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output'+filename+'/'
             use_base_model_weights = cp["TRAIN"].getboolean("use_base_model_weights")
@@ -238,7 +243,7 @@ def main(fold,gender_train, finetune, small):
 
             finally:
                 os.remove(running_flag_file)
-    elif finetune:
+    elif oversample:
         for filename in ['_oversample_5000_7']:
     ############################################################################################# train config ####################################################################################################
             output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output'+filename+'/'
@@ -648,8 +653,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("fold", type=int, help="the initial fold to train with")
     parser.add_argument("-g", "--gender", default="female", help="specify gender to start with (default female)")
-    parser.add_argument("-f", "--finetune", default="false", help="specify whether to freeze some of the laters")
+    parser.add_argument("-o", "--oversample", default="false")
     parser.add_argument("-s", "--small", default="false", help="boolean to indicate whether to use smaller training set")
+    parser.add_argument("-k", "--kenny", default="true", help="use for kenny's code")
     
     args = parser.parse_args()
     fold = args.fold
@@ -663,16 +669,21 @@ if __name__ == "__main__":
     else:
         genders_train=['100%_female_images','0%_female_images']
 
-    if args.finetune == "true" or args.finetune == 1:
-        f = True
+    if args.oversample == "true" or args.finetune == 1:
+        oversample = True
     else:
-        f = False
+        oversample = False
 
     if args.small == "true":
         s = True
     else:
         s = False
 
+    if args.kenny == "true":
+        k = True
+    else:
+        k = False
+
     for i in folds:
         for gender in genders_train:
-            main(fold=i,gender_train=gender, finetune=f, small=s)
+            main(fold=i,gender_train=gender, oversample=oversample, small=s, kenny=k)
