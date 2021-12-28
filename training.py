@@ -669,7 +669,7 @@ if __name__ == "__main__":
     else:
         genders_train=['100%_female_images','0%_female_images']
 
-    if args.oversample == "true" or args.finetune == 1:
+    if args.oversample == "true" or args.oversample == 1:
         oversample = True
     else:
         oversample = False
