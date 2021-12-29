@@ -35,10 +35,10 @@ def main(fold, gender_train, freeze):
 
     ############################################################################################# fine-tune config ####################################################################################################
     if gender_train == "0%_female_images":
-        finetune_names = ['female_finetune_1000', 'female_finetune_100', 'female_finetune_500', 'female_finetune_2500', 'female_finetune_5000']
+        finetune_names = ['female_finetune_5000', 'female_finetune_100', 'female_finetune_500', 'female_finetune_2500', 'female_finetune_1000']
         dev_file = 'female_finetune_dev'
     else:
-        finetune_names = ['male_finetune_1000', 'male_finetune_100', 'male_finetune_500', 'male_finetune_2500', 'male_finetune_5000']
+        finetune_names = ['male_finetune_5000', 'male_finetune_100', 'male_finetune_500', 'male_finetune_2500', 'male_finetune_1000']
         dev_file = 'male_finetune_dev'
 
     for finetune_name in finetune_names:
@@ -68,7 +68,7 @@ def main(fold, gender_train, freeze):
             # resuming mode
             print("** use trained model weights **")
             # load training status for resuming
-            training_stats_file = os.path.join(load_output_dir, ".training_stats.json")
+            training_stats_file = os.path.join(results_output_dir, ".training_stats.json")
             if os.path.isfile(training_stats_file):
                 # TODO: add loading previous learning rate?
                 training_stats = json.load(open(training_stats_file))

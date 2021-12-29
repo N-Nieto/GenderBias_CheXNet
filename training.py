@@ -151,7 +151,6 @@ def main(fold,gender_train, oversample, small, kenny):
                     use_base_weights=use_base_model_weights,
                     weights_path=model_weights_file,
                     input_shape=(image_dimension, image_dimension, 3),
-                    freeze=False
                 )
 
                 if show_model_summary:
@@ -552,7 +551,6 @@ def main(fold,gender_train, oversample, small, kenny):
                 use_base_weights=use_base_model_weights,
                 weights_path=model_weights_file,
                 input_shape=(image_dimension, image_dimension, 3),
-                freeze=freeze
             )
 
             if show_model_summary:
