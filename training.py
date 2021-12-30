@@ -39,7 +39,7 @@ def main(fold,gender_train, oversample, small, kenny):
     if kenny:
         filenames = ['_small_5000']
     else:
-        filenames = ['_small_20000', '_small_10000']
+        filenames = ['_small_10000']
     
     if small:
         for filename in filenames:

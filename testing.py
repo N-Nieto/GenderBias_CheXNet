@@ -30,7 +30,7 @@ def main(fold,gender_train,gender_test, simple):
         if simple:
             test_names = ['']
         else:
-            test_names = ['_small_5000', '_small_10000']
+            test_names = ['_small_5000', '_small_10000', '_small_15000', '_small_20000', '_small_25000']
     else:
         if simple:
             test_names = ['']
