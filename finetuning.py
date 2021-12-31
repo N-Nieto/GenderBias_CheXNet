@@ -62,6 +62,11 @@ def main(fold, gender_train, freeze):
         positive_weights_multiply = cp["FINETUNE"].getfloat("positive_weights_multiply")
         print('use trained model weights:', use_trained_model_weights)
 
+        results_output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
+        # check output_dir, create it if not exists
+        if not os.path.isdir(results_output_dir):
+            os.makedirs(results_output_dir)
+
         dataset_csv_dir = root_output_dir+gender_train+'/Fold_'+str(fold)+'/'
         # if previously trained weights is used, never re-split
         if use_trained_model_weights:
@@ -80,11 +85,6 @@ def main(fold, gender_train, freeze):
 
         show_model_summary = cp["FINETUNE"].getboolean("show_model_summary")
         # end parser config
-
-        results_output_dir= root_output_dir+gender_train+'/Fold_'+str(fold)+'/output_'+finetune_name+'/'
-        # check output_dir, create it if not exists
-        if not os.path.isdir(results_output_dir):
-            os.makedirs(results_output_dir)
         
         running_flag_file = os.path.join(results_output_dir, ".training.lock")
         if os.path.isfile(running_flag_file):
