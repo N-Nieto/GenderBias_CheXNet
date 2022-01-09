@@ -44,9 +44,9 @@ def main(fold,gender_train, small, custom_dev):
     
     if custom_dev:
         if gender_train == "0%_female_images":
-            dev_ending = "female"
+            dev_ending = "_female"
         else:
-            dev_ending = "male"
+            dev_ending = "_male"
     else:
         dev_ending = ""
 
