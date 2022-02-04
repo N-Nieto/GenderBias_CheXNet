@@ -6,7 +6,7 @@ from callback import MultipleClassAUROC, MultiGPUModelCheckpoint
 from configparser import ConfigParser
 from generator import AugmentedImageSequence
 from keras.callbacks import ModelCheckpoint, TensorBoard, ReduceLROnPlateau
-from keras.optimizers import Adam
+from keras.optimizers import Adam, RMSprop
 from keras.utils import multi_gpu_model
 from models.keras import ModelFactory
 from utility import get_sample_counts
@@ -408,7 +408,8 @@ def main(fold,gender_train, small, custom_dev):
                 )
 
             print("** compile model with class weights **")
-            optimizer = Adam(lr=initial_learning_rate)
+            # optimizer = Adam(lr=initial_learning_rate)
+            optimizer = RMSprop(lr=initial_learning_rate)
             model_train.compile(optimizer=optimizer, loss="binary_crossentropy")
             auroc = MultipleClassAUROC(
                 sequence=validation_sequence,

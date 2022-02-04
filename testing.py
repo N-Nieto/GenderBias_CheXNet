@@ -121,7 +121,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("fold", type=int, help="the initial fold to train with")
     parser.add_argument("-g", "--gender", default="female", help="specify gender to start with (default female)")
-    parser.add_argument("-s", "--simple", default="simple", help="specify whether to test finetuning as well")
+    parser.add_argument("-s", "--simple", default="false", help="specify whether to test finetuning as well")
     args = parser.parse_args()
     fold = args.fold
     if fold < 20 and fold >= 0:
@@ -136,7 +136,7 @@ if __name__ == "__main__":
 
     genders_test= ['test_female','test_males']
 
-    if args.simple =="simple":
+    if args.simple =="true":
         simple=True
     else:
         simple=False
